@@ -1,8 +1,8 @@
 #include "systemc.h"
 #include "User.h"
-#include "header/Control.h"
-#include "header/Engine.h"
-#include "header/FrontCar.h"
+#include "sees_ha2_header/Control.h"
+#include "sees_ha2_header/Engine.h"
+#include "sees_ha2_header/FrontCar.h"
 
 int sc_main(int argc, char* argv[])
 {
