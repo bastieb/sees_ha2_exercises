@@ -29,71 +29,47 @@ SC_MODULE(User){
 		car_sighted.initialize(false); 
 		SC_THREAD(starten);
 	}
-	//Abfolge des Nutzers Szenrio 1 von b)
+
 	void starten()
 	{
-		cout << "Timestamp / Throttle / V_current" << endl; //zur Erklärung der Tabelle
-		
+		//Aufgabe b) zweites Szenario
 		B_start=1;	
 		cout << "Nutzer startet den Motor" << endl;
 		wait(SC_ZERO_TIME); 
 	
-		
-		
-		cout << "Nutzer beschleunigt auf 30 m/s" << endl;
+
+		//Abfolge des Nutzers Szenrio 1 von b)
+		cout << "Der Nutzer beschleunigt" << endl;
 		p_gas=35;
 		wait(13,SC_SEC);
-		p_gas=0; 
-
+		p_gas=0;
 
 		cout << "Tempomat wird angeschalten" << endl;
-		B_set=1;wait(1,SC_SEC);B_set=0;
-
-		wait(60,SC_SEC);
-		cout << "Wunschgeschwindigkeit wird erhöht" << endl;
-		i=0;
-		while(i<5){
-			B_vp=1;
-			wait(1,SC_SEC);
-			i++;
-		}	
-		B_vp=0;
+		B_set=1;wait(1,SC_SEC);B_set=0; //Knopf wird wieder logelassen
 
 		//3 min warten
 		wait(60,SC_SEC);
 		
-		//Nutzer beschleunigt auf 40 m/s
-		cout << "Er beschleunigt auf 40 m/s " << endl;
-		p_gas=20;
-		wait(8,SC_SEC);
-		p_gas=0;
-	
-		//5 min warten
+		//Ein Auto wird gesichtet
+		cout << "Auto wird gesichtet" << endl;
+		car_sighted=true; 			
+		v_car=20;
+
+		//5 min folgen
 		wait(60,SC_SEC);
 
-		//Bremsen auf 15m/s
-		cout << "Nutzer bremst auf 15 m/s" << endl;
-		p_bremse=29;
-		wait(11,SC_SEC);
-		p_bremse=0;
+		//Auto vorne bremst auf 15 m/s
+		cout << "Auto bremst auf 15 m/s" << endl;
+		v_car=15;
 		
-		//2 min warten
-		wait(30,SC_SEC);
+		//wieder 5 min folgen
+		wait(60,SC_SEC);
 
-		//Bremsen bis Stillstand
-		cout << "Der Nutzer bremst bis zum Stillstand" << endl;
-		p_bremse=20;
-		wait(15,SC_SEC);
-		p_bremse=0;
-
-		//Auto steht
-		cout << "Auto steht" << endl;
-		wait(1,SC_SEC);
-	
-		//Nutzer schaltet Auto aus
-		cout << "Nutzer schlatet Motor aus" << endl;
- 		B_start=0;
-		wait(SC_ZERO_TIME);	
+		//Auto beschleunigt wieder auf 30 m/s
+		cout << "Auto bschleunigt auf 35 m/s" << endl;
+		v_car=35;
+		wait(5,SC_SEC);
+		
 	}
 
 };
