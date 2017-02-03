@@ -18,12 +18,12 @@ SC_MODULE(User){
 	sc_out<double> v_car;
 	sc_out<bool>  car_sighted;
 	//Variablen
-	int i,random, randomzeit;
+	int i,random, random2, randomzeit, random_old;
 
 	//Prozesse
 	SC_CTOR(User){
 		B_start.initialize(0);
-		p_gas.initialize(0);
+		//p_gas.initialize(0);
 		p_bremse.initialize(0);
 		B_set.initialize(0);
 		car_sighted.initialize(false); 
@@ -54,17 +54,20 @@ SC_MODULE(User){
 			wait(randomzeit,SC_SEC);
 			p_gas=0,p_bremse=0;
 			//neuer Zufall für Pedalaktionen
-			while (random !=2){
-				random= rand()%3;
-			//Gas geben			
-			if(random==0 && p_gas<100)p_gas= p_gas + 10;					 	
-			//Bremsen			
-			if(random==1 && p_bremse<100)B_set=0, p_bremse= p_bremse +10;	
-			cout << "Bremse ist " << p_bremse << ", Gas ist " << p_gas << endl;
-			}}
+			//while (random !=2){
+				random2= rand()%2;
+cout << "Gas bei 1 bremse bei 0:" << random2 << endl;
+				//Gas geben			
+				if(random2==1 && p_gas<100)p_gas = p_gas + 10;   
+				//Bremsen			
+				if(random2==0 && p_bremse<100){p_bremse = p_bremse + 10;B_set=0; }
+
+				cout << "Bremse ist " << p_bremse << ", Gas ist " << p_gas << endl;
+			//}
+		}
 		
 		//Tempomat anschalten
-		if(random==2 && tempomatstatus ==0 && p_bremse==0 && randomzeit > 1){
+		if(random==2 && tempomatstatus ==0 && p_bremse==0 && B_stop ==0 && randomzeit > 1){
 				wait(2, SC_SEC);
 				cout << "Tempomat wird angeschalten" << endl;
 				B_set=1;wait(1, SC_SEC);
@@ -115,6 +118,7 @@ SC_MODULE(User){
 		//Wenn es keine Möglichkeit gibt	
 		else i--; 			
 		i++;
+		random_old = random;
 			}
 
 	}
