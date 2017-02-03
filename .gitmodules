@@ -1,0 +1,6 @@
+[submodule "sees_ha2_exercises"]
+	path = sees_ha2_exercises
+	url = https://github.com/bastieb/sees_ha2_exercises
+[submodule "sees_ha2_header"]
+	path = sees_ha2_header
+	url = https://github.com/bastieb/sees_ha2_header
