@@ -18,7 +18,7 @@ SC_MODULE(User){
 	sc_out<double> v_car;
 	sc_out<bool>  car_sighted;
 	//Variablen
-	int i,random, randomzeit;
+	int random, randomzeit;
 
 	//Prozesse
 	SC_CTOR(User){
@@ -78,6 +78,5 @@ SC_MODULE(User){
 };
 
 #endif
-
  
 
