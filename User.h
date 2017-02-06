@@ -18,7 +18,7 @@ SC_MODULE(User){
 	sc_out<double> v_car;
 	sc_out<bool>  car_sighted;
 	//Variablen
-	int random, randomzeit;
+	int i,random, randomzeit;
 
 	//Prozesse
 	SC_CTOR(User){
@@ -29,54 +29,99 @@ SC_MODULE(User){
 		car_sighted.initialize(false); 
 		SC_THREAD(starten);
 	}
-
+	//Abfolge des Nutzers Szenrio 1 von b)
 	void starten()
 	{
-		//Aufgabe b) zweites Szenario
+		
 		B_start=1;	
 		cout << "Nutzer startet den Motor" << endl;
 		wait(SC_ZERO_TIME); 
-	
-		//Abfolge des Nutzers Szenrio 1 von b)
-		cout << "Der Nutzer beschleunigt" << endl;
-		p_gas=35;
-		wait(13,SC_SEC);
-		p_gas=0;
+		
+		cout << "TEMPOMATMODUSTEST" << endl;
 
 		B_set=1;
-		wait(1,SC_SEC);
+		wait(1,SC_SEC);	
 		cout << "Tempomat wird angeschalten" << endl;
-		B_set=0; //Knopf wird wieder logelassen
+		B_set=0;
 
-		//3 min warten
-		wait(166,SC_SEC);
+		//bis Minute 1 warten
+		wait(46,SC_SEC);
+		cout << "Wunschgeschwindigkeit wird auf 30 erhöht" << endl;
+		i=0;
+		while(i<30){
+			B_vp=1;
+			wait(1,SC_SEC);
+			i++;
+		}	
+		B_vp=0;
+
+		//bis Minute 3 warten
+		wait(50,SC_SEC);
+
+		cout << "Wunschgeschwindigkeit wird auf 10 gesenkt" << endl;
+		i = 0;
+		while(i < 20){
+			B_vm = 1;
+			wait(1,SC_SEC);
+			i++;
+		}	
+		B_vm = 0;
+
+		//bis Minute 3 warten
+		wait(30,SC_SEC);
+	
+		cout << "PEDALVORRANGSTEST" << endl;
+	
+		//Nutzer beschleunigt auf 40 m/s
+		cout << "Er beschleunigt auf 19 m/s " << endl;
+		p_gas=20;
+		wait(7,SC_SEC);
+		p_gas=0;
+		wait(1,SC_SEC);//sonst kommt cout zu früh
+		cout << "29 m/s erreicht. Nutzer geht vom Gas" << endl;
+	
+		//bis Minute 5 warten
+		wait(30,SC_SEC);
+
+		//Bremsen auf 15m/s
+		cout << "Nutzer bremst auf 1 m/s" << endl;
+		p_bremse=29;
+		wait(5,SC_SEC);
+		p_bremse=0;
+
+		//bis Minute 5 warten
+		wait(100,SC_SEC);
 		
-		//Ein Auto wird gesichtet
-		cout << "Auto wird gesichtet" << endl;
-		car_sighted=true; 			
-		v_car=20;
-
-		//5 min folgen
-		wait(300,SC_SEC);
-
-		//Auto vorne bremst auf 15 m/s
-		cout << "Vorderes Auto bremst auf 15 m/s" << endl;
-		v_car=15;
-		
-		//wieder 5 min folgen
-		wait(300,SC_SEC);
-
-		//Auto beschleunigt wieder auf 30 m/s
-		cout << "Vorderes Auto beschleunigt auf 35 m/s" << endl;
-		v_car=35;
+/*
+		wait(1,SC_SEC);//sonst kommt cout zu früh
+		cout << "15 m/s erreicht. Nutzer geht von der Bremse" << endl;
+		//2 min warten
 		wait(120,SC_SEC);
 
-		sc_stop();
+		//Bremsen bis Stillstand
+		cout << "Der Nutzer bremst bis zum Stillstand" << endl;
+		p_bremse=20;
+		wait(11,SC_SEC);
+		p_bremse=0;
+
+		//Auto steht
+		wait(1,SC_SEC);//sonst kommt cout zu früh
+		cout << "Auto steht" << endl;
+		wait(1,SC_SEC);
+	
+		//Nutzer schaltet Auto aus
+		cout << "Nutzer schlatet Motor aus" << endl;
+ 		B_start=0;
+		wait(SC_ZERO_TIME);
+*/
 		
+		//simulation ist zuende
+		sc_stop();	
 	}
 
 };
 
 #endif
+
  
 
