@@ -18,7 +18,7 @@ SC_MODULE(User){
 	sc_out<double> v_car;
 	sc_out<bool>  car_sighted;
 	//Variablen
-	int i,random, randomzeit;
+	int i,random, random_old, randomzeit;
 
 	//Prozesse
 	SC_CTOR(User){
@@ -39,8 +39,12 @@ SC_MODULE(User){
 	//Anzahl der Nutzereingaben
 	while(i<20){				
 		//zufallszahlen generieren
+		srand(time(NULL)); 
 		randomzeit = rand() %16;
-		random = rand() %11;
+		do{
+			random = rand() %11;
+		}while(random == random_old);
+		random_old = random;
 
 		//Auto anschalten
 		if(random==0 && B_stop ==1){		
@@ -114,7 +118,7 @@ SC_MODULE(User){
 		//FrontCar bremst um 1 m/s
 		if(random==10 && dist<300 && v_car>5){ 			
 				v_car=v_car-1;
-				cout << "FrontCar verringtert v_car um 1 m/s "  << endl;				
+				cout << "FrontCar verringert v_car um 1 m/s "  << endl;				
 				wait(1,SC_SEC);				
 				}	
 		//Wenn es keine Möglichkeit gibt	
