@@ -37,18 +37,19 @@ SC_MODULE(User){
 		cout << "Nutzer startet den Motor" << endl;
 		wait(SC_ZERO_TIME); 
 	
-
 		//Abfolge des Nutzers Szenrio 1 von b)
 		cout << "Der Nutzer beschleunigt" << endl;
 		p_gas=35;
 		wait(13,SC_SEC);
 		p_gas=0;
 
+		B_set=1;
+		wait(1,SC_SEC);
 		cout << "Tempomat wird angeschalten" << endl;
-		B_set=1;wait(1,SC_SEC);B_set=0; //Knopf wird wieder logelassen
+		B_set=0; //Knopf wird wieder logelassen
 
 		//3 min warten
-		wait(60,SC_SEC);
+		wait(166,SC_SEC);
 		
 		//Ein Auto wird gesichtet
 		cout << "Auto wird gesichtet" << endl;
@@ -56,19 +57,21 @@ SC_MODULE(User){
 		v_car=20;
 
 		//5 min folgen
-		wait(60,SC_SEC);
+		wait(300,SC_SEC);
 
 		//Auto vorne bremst auf 15 m/s
-		cout << "Auto bremst auf 15 m/s" << endl;
+		cout << "Vorderes Auto bremst auf 15 m/s" << endl;
 		v_car=15;
 		
 		//wieder 5 min folgen
-		wait(60,SC_SEC);
+		wait(300,SC_SEC);
 
 		//Auto beschleunigt wieder auf 30 m/s
-		cout << "Auto bschleunigt auf 35 m/s" << endl;
+		cout << "Vorderes Auto beschleunigt auf 35 m/s" << endl;
 		v_car=35;
-		wait(5,SC_SEC);
+		wait(120,SC_SEC);
+
+		sc_stop();
 		
 	}
 
