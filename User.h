@@ -32,7 +32,6 @@ SC_MODULE(User){
 	//Abfolge des Nutzers Szenrio 1 von b)
 	void starten()
 	{
-		cout << "Timestamp / Throttle / V_current" << endl; //zur Erklärung der Tabelle
 		
 		B_start=1;	
 		cout << "Nutzer startet den Motor" << endl;
@@ -46,10 +45,14 @@ SC_MODULE(User){
 		p_gas=0; 
 
 
+		
+		B_set=1;
+		wait(1,SC_SEC);	
 		cout << "Tempomat wird angeschalten" << endl;
-		B_set=1;wait(1,SC_SEC);B_set=0;
+		B_set=0;
 
-		wait(60,SC_SEC);
+		//bis Minute 1 warten
+		wait(46,SC_SEC);
 		cout << "Wunschgeschwindigkeit wird erhöht" << endl;
 		i=0;
 		while(i<5){
@@ -59,17 +62,19 @@ SC_MODULE(User){
 		}	
 		B_vp=0;
 
-		//3 min warten
-		wait(60,SC_SEC);
+		//bis Minute 3 warten
+		wait(115,SC_SEC);
 		
 		//Nutzer beschleunigt auf 40 m/s
 		cout << "Er beschleunigt auf 40 m/s " << endl;
 		p_gas=20;
-		wait(8,SC_SEC);
+		wait(7,SC_SEC);
 		p_gas=0;
+		wait(1,SC_SEC);//sonst kommt cout zu früh
+		cout << "40 m/s erreicht. Nutzer geht vom Gas" << endl;
 	
-		//5 min warten
-		wait(60,SC_SEC);
+		//bis Minute 5 warten
+		wait(112,SC_SEC);
 
 		//Bremsen auf 15m/s
 		cout << "Nutzer bremst auf 15 m/s" << endl;
@@ -77,23 +82,29 @@ SC_MODULE(User){
 		wait(11,SC_SEC);
 		p_bremse=0;
 		
+		wait(1,SC_SEC);//sonst kommt cout zu früh
+		cout << "15 m/s erreicht. Nutzer geht von der Bremse" << endl;
 		//2 min warten
-		wait(30,SC_SEC);
+		wait(120,SC_SEC);
 
 		//Bremsen bis Stillstand
 		cout << "Der Nutzer bremst bis zum Stillstand" << endl;
 		p_bremse=20;
-		wait(15,SC_SEC);
+		wait(11,SC_SEC);
 		p_bremse=0;
 
 		//Auto steht
+		wait(1,SC_SEC);//sonst kommt cout zu früh
 		cout << "Auto steht" << endl;
 		wait(1,SC_SEC);
 	
 		//Nutzer schaltet Auto aus
 		cout << "Nutzer schlatet Motor aus" << endl;
  		B_start=0;
-		wait(SC_ZERO_TIME);	
+		wait(SC_ZERO_TIME);
+		
+		//simulation ist zuende
+		sc_stop();	
 	}
 
 };
