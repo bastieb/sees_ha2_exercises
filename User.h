@@ -39,10 +39,10 @@ SC_MODULE(User){
 	//Anzahl der Nutzereingaben
 	while(i<20){				
 		//zufallszahlen generieren
-		srand(time(NULL)); 
+		//srand(time(NULL)); 
 		randomzeit = rand() %16;
 		do{
-			random = rand() %11;
+			random = rand() %40;
 		}while(random == random_old);
 		random_old = random;
 
