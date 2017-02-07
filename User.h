@@ -53,7 +53,9 @@ SC_MODULE(User){
 		
 		//Ein Auto wird gesichtet
 		cout << "Auto wird gesichtet" << endl;
-		car_sighted=true; 			
+		car_sighted=true;
+		wait(1, SC_SEC); 
+		car_sighted=false;			
 		v_car=20;
 
 		//5 min folgen
