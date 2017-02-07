@@ -36,84 +36,83 @@ SC_MODULE(User){
 		B_start=1;	
 		cout << "Nutzer startet den Motor" << endl;
 		wait(SC_ZERO_TIME); 
-		
-		cout << "TEMPOMATMODUSTEST" << endl;
 
+		
 		B_set=1;
 		wait(1,SC_SEC);	
 		cout << "Tempomat wird angeschalten" << endl;
 		B_set=0;
 
-		//bis Minute 1 warten
-		wait(46,SC_SEC);
-		cout << "Wunschgeschwindigkeit wird auf 30 erhöht" << endl;
+		cout << "TEST 1: Wird v_d +/- v_delta (2 m/s) erreicht?" << endl;
+
+		cout << "Versuch a: v_d wird auf 50 gestellt" << endl;
 		i=0;
-		while(i<30){
+		while(i<50){
 			B_vp=1;
 			wait(1,SC_SEC);
 			i++;
 		}	
 		B_vp=0;
 
-		//bis Minute 3 warten
-		wait(50,SC_SEC);
+		wait(115,SC_SEC);
+		cout << "TEST 1a bestanden: 50 m/s wird für über 60 sekunden genau gehalten" << endl; 
+		
 
-		cout << "Wunschgeschwindigkeit wird auf 10 gesenkt" << endl;
-		i = 0;
-		while(i < 20){
-			B_vm = 1;
-			wait(1,SC_SEC);
+		cout << "Versuch b: v_d wird auf 10 gestellt" << endl;
+		i=0;
+		while(i<20){
+			B_vm=1;
+			wait(2,SC_SEC);
 			i++;
 		}	
-		B_vm = 0;
+		B_vm=0;
 
-		//bis Minute 3 warten
 		wait(30,SC_SEC);
-	
-		cout << "PEDALVORRANGSTEST" << endl;
-	
-		//Nutzer beschleunigt auf 40 m/s
-		cout << "Er beschleunigt auf 19 m/s " << endl;
+		cout << "TEST 1b bestanden: 10 m/s wird für über 30 sekunden auf 1 m/s genau gehalten" << endl; 
+
+		cout << "TEST 2: Haben Pedale Vorrang vor dem Tempomat?" << endl;
+		
+		cout << "Versuch a: Der Benutzer tritt auf das Gaspedal " << endl;
 		p_gas=20;
 		wait(7,SC_SEC);
 		p_gas=0;
-		wait(1,SC_SEC);//sonst kommt cout zu früh
-		cout << "29 m/s erreicht. Nutzer geht vom Gas" << endl;
-	
-		//bis Minute 5 warten
+		wait(1,SC_SEC);
+		
 		wait(30,SC_SEC);
 
-		//Bremsen auf 15m/s
-		cout << "Nutzer bremst auf 1 m/s" << endl;
-		p_bremse=29;
+		cout << "TEST 2a bestanden: das Auto hat beschleunigt" << endl;
+	
+		cout << "Versuch b: Der Benutzer tritt auf das Bremspedal " << endl;
+		p_bremse=20;
 		wait(5,SC_SEC);
 		p_bremse=0;
-
-		//bis Minute 5 warten
-		wait(100,SC_SEC);
-		
-/*
-		wait(1,SC_SEC);//sonst kommt cout zu früh
-		cout << "15 m/s erreicht. Nutzer geht von der Bremse" << endl;
-		//2 min warten
-		wait(120,SC_SEC);
-
-		//Bremsen bis Stillstand
-		cout << "Der Nutzer bremst bis zum Stillstand" << endl;
-		p_bremse=20;
-		wait(11,SC_SEC);
-		p_bremse=0;
-
-		//Auto steht
-		wait(1,SC_SEC);//sonst kommt cout zu früh
-		cout << "Auto steht" << endl;
 		wait(1,SC_SEC);
+		
+		wait(30,SC_SEC);
+
+		cout << "TEST 2b bestanden: das Auto bremst" << endl;
+
+
+		cout << "TEST 3: Hat das Bremspedal Vorrang vor dem Gaspedal?" << endl;
+		
+		cout << "Versuch a1: Der Benutzer tritt auf das Gaspedal " << endl;
+		p_gas=20;
+		wait(7,SC_SEC);
+
+		cout << "Versuch a2: Der Benutzer tritt auf das Bremspedal, lässt aber das Gaspedal nicht los " << endl;
+		p_bremse=20;
+		wait(5,SC_SEC);
+		cout << "TEST 3a bestanden: das Auto bremst" << endl;
 	
-		//Nutzer schaltet Auto aus
-		cout << "Nutzer schlatet Motor aus" << endl;
- 		B_start=0;
-		wait(SC_ZERO_TIME);
-*/
+		cout << "Versuch b1: der Benutzer lässt das Bremspedal los, Das Auto beschleunigt" << endl;
+		p_bremse=0;
+		wait(10,SC_SEC);
+		cout << "Versuch b2: Der Benutzer tritt auf das Bremspedal, lässt aber das Gaspedal nicht los " << endl;
+		p_bremse=20;
+		wait(5,SC_SEC);
+		p_bremse=0;
+		
+		cout << "TEST 3b bestanden: das Auto bremst" << endl;
 		
 		//simulation ist zuende
 		sc_stop();	
