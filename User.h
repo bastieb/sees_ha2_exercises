@@ -18,7 +18,7 @@ SC_MODULE(User){
 	sc_out<double> v_car;
 	sc_out<bool>  car_sighted;
 	//Variablen
-	int i,random, random_old, randomzeit;
+	int i,random, randomzeit;
 
 	//Prozesse
 	SC_CTOR(User){
@@ -32,100 +32,49 @@ SC_MODULE(User){
 
 	void starten()
 	{
-		i=0,		
-		B_start=1;	//Auto wird angeschalten
-		cout << "starte den Motor" << endl;
+		//Aufgabe b) zweites Szenario
+		B_start=1;	
+		cout << "Nutzer startet den Motor" << endl;
+		wait(SC_ZERO_TIME); 
+	
+		//Abfolge des Nutzers Szenrio 1 von b)
+		cout << "Der Nutzer beschleunigt" << endl;
+		p_gas=35;
+		wait(13,SC_SEC);
+		p_gas=0;
 
-	//Anzahl der Nutzereingaben
-	while(i<20){				
-		//zufallszahlen generieren
-		//srand(time(NULL)); 
-		randomzeit = rand() %16;
-		do{
-			random = rand() %40;
-		}while(random == random_old);
-		random_old = random;
+		B_set=1;
+		wait(1,SC_SEC);
+		cout << "Tempomat wird angeschalten" << endl;
+		B_set=0; //Knopf wird wieder logelassen
 
-		//Auto anschalten
-		if(random==0 && B_stop ==1){		
-		cout << " Nutzer schaltet das Auto an und bereitet sich vor" << endl;				
-		B_stop=0, B_start=1;				
-		wait(2,SC_SEC);
-				}
-		//Pedalaenderung
-		//Gas geben
-		if(random==1 && randomzeit > 9 && B_stop ==0){
-			wait(randomzeit, SC_SEC);
-			cout << "Gas geben" << endl;
-			p_bremse=0;p_gas=1+rand() %100;
-			}
-		//Bremsen
-		if(random==2 && randomzeit > 9 && B_stop ==0){
-			wait(randomzeit, SC_SEC);
-			cout << "Bremsen" << endl;
-			p_gas=0;p_bremse=1+rand() %100;
-			}
-		//Rollen
-		if(random==3 && randomzeit > 9 && B_stop ==0){
-			wait(randomzeit, SC_SEC);
-			cout << "Rollen" << endl;
-			p_gas=0,p_bremse=0;
-			}
+		//3 min warten
+		wait(166,SC_SEC);
 		
-		//Tempomat anschalten
-		if(random==4 && tempomatstatus ==0 && p_bremse==0 && randomzeit > 1){
-				wait(randomzeit, SC_SEC);
-				cout << "Tempomat wird angeschalten" << endl;
-				B_set=1;wait(1, SC_SEC);
-				B_set=0; //Er lässt den Knop wieder los
-				}
-		//v_d erhöhen
-		if(random==5 && tempomatstatus == 1 && randomzeit > 4){
-				wait(randomzeit, SC_SEC);				
-				cout << "Wunschgeschwindigkeit wird um 1 erhöht" << endl;
-				B_vp=1;
-				//B_vp wieder Null setzen
-				wait(1, SC_SEC); B_vp=0;
-				}
-		//v_d verringern
-		if(random==6 && tempomatstatus == 1 && randomzeit > 4){
-				wait(randomzeit, SC_SEC);				
-				cout << "Wunschgeschwindigkeit wird um 1 verringert" << endl;
-				B_vm=1;
-				//B_vm wieder Null setzen
-				wait(1, SC_SEC); B_vm=0;			
-				}
-		//Auto ausschalten
-		if(random==7 && B_stop ==0){				//Auto ausschalten
-				cout << "Nutzer schaltet das Auto aus" << endl;				
-				p_gas=0,p_bremse=0;
-				B_stop=1, B_start=0;
-				wait(2,SC_SEC);			//Auto bleibt 2 Sekunden aus			
-					}
-		//Sensor sichtet ein Auto
-		if(random==8 && tempomatstatus == 1 && dist>300){
-				car_sighted=true; 			
-				v_car=rand() %50;
-				cout << "Es wurde ein Auto mit der Geschwindigkeit " << v_car << " gesichtet" << endl;		
-				wait(1,SC_SEC);		
-				}
-		//FrontCar beschleunigt um 1 m/s
-		if(random==9 && dist<300 && v_car<50){ 			
-				v_car=v_car+1;
-				cout << "FrontCar beschleunigt v_car um 1 m/s "  << endl;				
-				wait(1,SC_SEC);				
-				}
-		//FrontCar bremst um 1 m/s
-		if(random==10 && dist<300 && v_car>5){ 			
-				v_car=v_car-1;
-				cout << "FrontCar verringert v_car um 1 m/s "  << endl;				
-				wait(1,SC_SEC);				
-				}	
-		//Wenn es keine Möglichkeit gibt	
-		else i--; 			
-		i++;
-			}
+		//Ein Auto wird gesichtet
+		cout << "Auto wird gesichtet" << endl;
+		car_sighted = true;
+		wait(1, SC_SEC); 
+		car_sighted = false;			
+		v_car = 20;
 
+		//5 min folgen
+		wait(300,SC_SEC);
+
+		//Auto vorne bremst auf 15 m/s
+		cout << "Vorderes Auto bremst auf 15 m/s" << endl;
+		v_car=15;
+		
+		//wieder 5 min folgen
+		wait(300,SC_SEC);
+
+		//Auto beschleunigt wieder auf 30 m/s
+		cout << "Vorderes Auto beschleunigt auf 35 m/s" << endl;
+		v_car=35;
+		wait(120,SC_SEC);
+
+		sc_stop();
+		
 	}
 
 };
