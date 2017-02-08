@@ -33,62 +33,62 @@ SC_MODULE(User){
 	void starten()
 	{
 		
-		B_start=1;	
+		B_start = 1;	
 		cout << "Nutzer startet den Motor" << endl;
 		wait(SC_ZERO_TIME); 
 
 		
-		B_set=1;
+		B_set = 1;
 		wait(1,SC_SEC);	
 		cout << "Tempomat wird angeschalten" << endl;
-		B_set=0;
+		B_set = 0;
 
 		cout << "TEST 1: Wird v_d +/- v_delta (2 m/s) erreicht?" << endl;
 
 		cout << "Versuch a: v_d wird auf 50 gestellt" << endl;
-		i=0;
-		while(i<50){
-			B_vp=1;
-			wait(1,SC_SEC);
+		i = 0;
+		while(i < 50){
+			B_vp = 1;
+			wait(1, SC_SEC);
 			i++;
 		}	
-		B_vp=0;
+		B_vp = 0;
 
-		wait(115,SC_SEC);
+		wait(115, SC_SEC);
 		cout << "TEST 1a bestanden: 50 m/s wird für über 60 sekunden genau gehalten" << endl; 
 		
 
 		cout << "Versuch b: v_d wird auf 10 gestellt" << endl;
-		i=0;
-		while(i<20){
-			B_vm=1;
-			wait(2,SC_SEC);
+		i = 0;
+		while(i < 20){
+			B_vm = 1;
+			wait(2, SC_SEC);
 			i++;
 		}	
-		B_vm=0;
+		B_vm = 0;
 
-		wait(30,SC_SEC);
+		wait(30, SC_SEC);
 		cout << "TEST 1b bestanden: 10 m/s wird für über 30 sekunden auf 1 m/s genau gehalten" << endl; 
 
 		cout << "TEST 2: Haben Pedale Vorrang vor dem Tempomat?" << endl;
 		
 		cout << "Versuch a: Der Benutzer tritt auf das Gaspedal " << endl;
-		p_gas=20;
-		wait(7,SC_SEC);
-		p_gas=0;
-		wait(1,SC_SEC);
+		p_gas = 20;
+		wait(7, SC_SEC);
+		p_gas = 0;
+		wait(1, SC_SEC);
 		
-		wait(30,SC_SEC);
+		wait(30, SC_SEC);
 
 		cout << "TEST 2a bestanden: das Auto hat beschleunigt" << endl;
 	
 		cout << "Versuch b: Der Benutzer tritt auf das Bremspedal " << endl;
-		p_bremse=20;
-		wait(5,SC_SEC);
-		p_bremse=0;
-		wait(1,SC_SEC);
+		p_bremse = 20;
+		wait(5, SC_SEC);
+		p_bremse = 0;
+		wait(1, SC_SEC);
 		
-		wait(30,SC_SEC);
+		wait(30, SC_SEC);
 
 		cout << "TEST 2b bestanden: das Auto bremst" << endl;
 
@@ -96,24 +96,58 @@ SC_MODULE(User){
 		cout << "TEST 3: Hat das Bremspedal Vorrang vor dem Gaspedal?" << endl;
 		
 		cout << "Versuch a1: Der Benutzer tritt auf das Gaspedal " << endl;
-		p_gas=20;
-		wait(7,SC_SEC);
+		p_gas = 20;
+		wait(7, SC_SEC);
 
 		cout << "Versuch a2: Der Benutzer tritt auf das Bremspedal, lässt aber das Gaspedal nicht los " << endl;
-		p_bremse=20;
-		wait(5,SC_SEC);
+		p_bremse = 20;
+		wait(5, SC_SEC);
 		cout << "TEST 3a bestanden: das Auto bremst" << endl;
 	
 		cout << "Versuch b1: der Benutzer lässt das Bremspedal los, Das Auto beschleunigt" << endl;
-		p_bremse=0;
-		wait(10,SC_SEC);
+		p_bremse = 0;
+		wait(10, SC_SEC);
 		cout << "Versuch b2: Der Benutzer tritt auf das Bremspedal, lässt aber das Gaspedal nicht los " << endl;
-		p_bremse=20;
-		wait(5,SC_SEC);
-		p_bremse=0;
+		p_bremse = 20;
+		wait(5, SC_SEC);
+		p_bremse = 0;
+		p_gas = 0;
 		
 		cout << "TEST 3b bestanden: das Auto bremst" << endl;
+
+		cout << "TEST 4: Wechselt das System korrekt zwischen Tempomat und ACC?" << endl;
+		cout << "Versuch a: Geht der ACC an und reglt die Geschwindigkeit runter, wenn ein Auto in dem Sensorbereich einfährt?" << endl;
+		cout << "Der Benutzer beschleunigt auf 34 m/s" << endl;
+		p_gas = 100;
+		wait(3, SC_SEC);
+		p_gas = 0;
+
+		//Tempomat an
+		B_set = 1;
+		wait(1, SC_SEC);	
+		cout << "Tempomat wird angeschalten" << endl;
+		B_set = 0;
+
+		//Ein Auto wird gesichtet
+		cout << "Ein Auto kommt in den Sensorbereich mit 20 m/s" << endl;
+		car_sighted=true;
+		wait(1, SC_SEC); 
+		car_sighted=false;			
+		v_car = 20;
+
+		//5 min folgen
+		wait(30,SC_SEC);
+		cout << "TEST 4a bestanden: Der ACC wird aktiviert." << endl;
 		
+		cout << "Versuch b: Geht der Tempomat wieder an wenn das Auto den Sensorbereich verlässt?" << endl;
+		//Auto vorne bremst auf 15 m/s
+		cout << "Vorderes Auto beschleunigt auf 50 m/s" << endl;
+		v_car=50;
+		
+		//wieder 5 min folgen
+		wait(100,SC_SEC);
+		cout << "TEST 4b bestanden: Der Tempomat wird wieder aktiviert, da das Auto wieder auf 34 m/s beschleunigt " << endl;
+
 		//simulation ist zuende
 		sc_stop();	
 	}
